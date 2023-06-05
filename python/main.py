@@ -6,13 +6,14 @@ import pandas as pd
 import click
 
 
-PERIOD = "1mo"
+INTERVAL = "1m"
+PERIOD = "1d"
 TICKERS = ["AAPL", "GOOG", "TSLA"]
 for i, ticker in enumerate(TICKERS):
     TICKERS[i] = ticker_to_yf(ticker)
 
 for ticker in TICKERS:
-    data = ticker.history(period=PERIOD)
+    data = ticker.history(period=PERIOD, interval=INTERVAL)
     st.write(f"Volume data for {ticker.info['longName']} for {PERIOD}")
     st.line_chart(data['Volume'])
 
