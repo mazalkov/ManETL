@@ -5,7 +5,7 @@ from arcticdb import Arctic
 from logging import getLogger
 import click
 
-CSV_LIST = os.listdir('../data/')
+CSV_PATH = '../data/'
 DB_PATH = 'lmdb:////mnt/c/Users/sharl/repos/DTS/BigData/WM9L8-IMA/astore'
 
 class ArcticInitializer:
@@ -24,16 +24,20 @@ class ArcticInitializer:
     def get_library(self):
         return self.get_db()[self.libname]
 
-def extract_csv(csv_list: List) -> Dict:
+def extract_csv(csv_path: List) -> Dict:
+    csv_list = os.listdir(csv_path)
     csv_hash = {}
     for csv in csv_list:
         stock = csv.split('.csv')[0]
         csv_hash[stock] = pd.read_csv(f'../data/{csv}')
     return csv_hash
 
-def csv_to_arctic(csv_list=CSV_LIST):
-    data = extract_csv(csv_list)
-    arctic = ArcticInitializer(DB_PATH, 'test')
+@click.command()
+@click.option('--library', prompt='Enter library name', default='test')
+@click.option('--csv-path', prompt='Enter path for csv files', default='../data/')
+def csv_to_arctic(library, csv_path):
+    data = extract_csv(csv_path)
+    arctic = ArcticInitializer(DB_PATH, library)
     arctic.create_library()
     lib = arctic.get_library()
 
