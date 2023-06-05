@@ -1,3 +1,4 @@
+from arcticdb import Arctic
 import streamlit as st
 import pandas as pd
 
