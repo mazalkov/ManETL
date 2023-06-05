@@ -1,12 +1,21 @@
 from arcticdb import Arctic
+from utils import ticker_to_yf
 import streamlit as st
+import yfinance as yf
 import pandas as pd
 import click
 
 
-data = pd.read_csv("data/AAPL.csv")
+PERIOD = "1mo"
+TICKERS = ["AAPL", "GOOG", "TSLA"]
+for i, ticker in enumerate(TICKERS):
+    TICKERS[i] = ticker_to_yf(ticker)
 
-st.dataframe(data.head(10))
+for ticker in TICKERS:
+    data = ticker.history(period=PERIOD)
+    st.write(f"Volume data for {ticker.info['longName']} for {PERIOD}")
+    st.line_chart(data['Volume'])
+
 
 @click.command()
 @click.option("--arg", default="Hello World", help="Test argument")
