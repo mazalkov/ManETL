@@ -7,6 +7,7 @@ import click
 
 CSV_PATH = '../data/'
 DB_PATH = 'lmdb:////mnt/c/Users/sharl/repos/DTS/BigData/WM9L8-IMA/astore'
+S3_PATH = "s3://s3.eu-west-2.amazonaws.com:manstocks?region=eu-west-2&access=AKIAVHAD6ZB4RYHDPBWA&secret=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
 
 class ArcticInitializer:
     def __init__(self, dbpath:str, libname:str):
@@ -37,7 +38,7 @@ def extract_csv(csv_path: List) -> Dict:
 @click.option('--csv-path', prompt='Enter path for csv files', default='../data/')
 def csv_to_arctic(library, csv_path):
     data = extract_csv(csv_path)
-    arctic = ArcticInitializer(DB_PATH, library)
+    arctic = ArcticInitializer(S3_PATH, library)
     arctic.create_library()
     lib = arctic.get_library()
 
