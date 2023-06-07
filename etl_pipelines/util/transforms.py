@@ -6,6 +6,8 @@ import yfinance as yf
 
 IMA_df = pd.read_csv('data/AAPL.csv')
 
+IMA_df['daily_returns']=(IMA_df['Close'].pct_change())*100
+
 def VWAP(high, low, close):
     typical_price = np.mean([high, low, close])
     return typical_price
@@ -18,8 +20,6 @@ def daily_returns(Close, Volume):
 
 #IMA_df['VWAP'] = IMA_df.apply(lambda x: VWAP(x["High"], x["Low"], x["Close"]), axis=1)
 
-
-IMA_df['daily_returns']=(IMA_df['Close'].pct_change())*100
 
 daily_volatility_apple = IMA_df['daily_returns'].std()
 print('Daily volatility:')
