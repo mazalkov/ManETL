@@ -1,7 +1,5 @@
-import streamlit as st
-import pandas as pd
+from app import etl
 
 
-data = pd.read_csv("data/AAPL.csv")
-
-st.dataframe(data.head(10))
+if __name__ == "__main__":
+    etl()

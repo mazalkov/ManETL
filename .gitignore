@@ -402,3 +402,11 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#intellij
+.idea/*
+
+# instance specific files
+postgres/*
+airflow/airflow-webserver.pid
+
