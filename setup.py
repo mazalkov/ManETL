@@ -12,6 +12,6 @@ setup(
     ],
     entry_points="""
         [console_scripts]
-        csv_to_arctic=WM9L8_IMA.etl_pipelines.csv_to_arctic:csv_to_arctic
+        csv_to_arctic=man_etl.etl_pipelines.csv_to_arctic:csv_to_arctic
     """,
 )
