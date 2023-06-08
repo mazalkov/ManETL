@@ -1,16 +1,17 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='WM9L8_IMA',
-    version='0.1',
+    name="man_etl",
+    version="0.0.4",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'Click',
+        "Click",
+        "arcticdb",
+        "pandas",
     ],
-    entry_points='''
+    entry_points="""
         [console_scripts]
         csv_to_arctic=WM9L8_IMA.etl_pipelines.csv_to_arctic:csv_to_arctic
-    ''',
+    """,
 )
- 
