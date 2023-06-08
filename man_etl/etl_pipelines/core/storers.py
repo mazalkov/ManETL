@@ -4,7 +4,7 @@ import pandas as pd
 import logging
 from typing import Dict
 
-#from arcticdb.version_store.library import Library
+from arcticdb.version_store.library import Library
 from pyarrow import flight, Table
 from pyarrow._flight import FlightClient
 
@@ -18,8 +18,7 @@ logger = logging.getLogger('Logger')
 
 @dataclass
 class ArcticStorer(Storer):
-    #destination: Library
-    #destination: Library
+    destination: Library
     to_store: Dict
     
 

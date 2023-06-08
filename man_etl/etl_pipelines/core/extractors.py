@@ -4,11 +4,13 @@ from contextlib import contextmanager
 import pandas as pd
 import logging
 from man_etl.etl_pipelines.core.base import Extractor
-#from arcticdb.version_store.library import Library
+from arcticdb.version_store.library import Library
 from typing import List, Dict
 from dataclasses import dataclass
 
 from pyarrow._flight import FlightClient
+
+from man_etl.etl_pipelines.util.definitions import TRANSFORM
 from man_etl.etl_pipelines.util.utils import SERVER_MAPPINGS
 from pyarrow import flight
 
@@ -34,7 +36,7 @@ class YFExtractor(Extractor):
 
 @dataclass
 class ArcticExtractor(Extractor):
-    #library: Library
+    library: Library
 
     def extract(self, symbol: str) -> pd.DataFrame:
         return self.library.read(symbol).data
