@@ -7,7 +7,6 @@ from man_etl.etl_pipelines.core.base import Extractor
 #from arcticdb.version_store.library import Library
 from typing import List, Dict
 from dataclasses import dataclass
-from man_etl.etl_pipelines.util.definitions import TRANSFORM
 
 from pyarrow._flight import FlightClient
 from man_etl.etl_pipelines.util.utils import SERVER_MAPPINGS

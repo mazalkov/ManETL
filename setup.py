@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="man_etl",
-    version="0.0.4",
+    version="0.0.6",
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
@@ -14,5 +14,6 @@ setup(
         [console_scripts]
         csv_to_arctic=man_etl.etl_pipelines.csv_to_arctic:csv_to_arctic
         ons_to_arctic=man_etl.etl_pipelines.ons_to_arctic:ons_to_arctic
+        arctic_transform=man_etl.etl_pipelines.arctic_transform:arctic_transform
     """,
 )
