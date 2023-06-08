@@ -21,7 +21,7 @@ def arctic_transform(library):
     logger.info(f'Transforming data.......')
     transformed_data = DataFrameTransformer(data=extracted_data, transformers=calcs).transform()
     logger.info(f'Storing transformed data in S3')
-    ArcticStorer(to_store=transformed_data, destination=arctic_lib).store_many()
+    ArcticStorer(to_store=transformed_data, destination=arctic_lib).store()
 
 
 if __name__ == "__main__":
