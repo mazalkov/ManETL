@@ -5,7 +5,8 @@ from typing import Dict
 from arcticdb import Arctic
 from arcticdb.version_store.library import Library
 from logging import getLogger
-from man_etl.etl_pipelines.core.base import Storer
+from typing import List
+from man_etl.etl_pipelines.core.base import Storer, Extractor
 from dataclasses import dataclass
 
 
@@ -51,3 +52,18 @@ class ArcticStorer(Storer):
         for sym in self.to_store:
             data = self.to_store[sym]
             self.store(sym, data)
+
+        
+@dataclass
+class ArcticExtractor(Extractor):
+    symbols: List
+    library: Library
+
+    def extract(self, symbol: str) -> pd.DataFrame:
+        return self.library.read(symbol).data
+
+    def extract_many(self) -> Dict:
+        data = {}
+        for sym in self.symbols:
+            data[sym] = self.extract(sym)
+        return data
