@@ -409,4 +409,5 @@ FodyWeavers.xsd
 # instance specific files
 postgres/*
 airflow/airflow-webserver.pid
-
+dist/
+man_etl.egg-info/
