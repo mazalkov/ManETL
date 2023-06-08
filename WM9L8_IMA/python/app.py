@@ -15,7 +15,7 @@ for i, ticker in enumerate(TICKERS):
 for ticker in TICKERS:
     data = ticker.history(period=PERIOD, interval=INTERVAL)
     st.write(f"Volume data for {ticker.info['longName']} for {PERIOD}")
-    st.line_chart(data['Volume'])
+    st.line_chart(data["Volume"])
 
 
 @click.command()
