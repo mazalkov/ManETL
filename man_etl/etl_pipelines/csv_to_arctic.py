@@ -5,7 +5,7 @@ from arcticdb import Arctic
 from logging import getLogger
 import click
 
-from WM9L8_IMA.etl_pipelines.core.base import Extractor, Storer
+from man_etl.etl_pipelines.core.base import Extractor, Storer
 
 CSV_PATH = "../data/"
 DB_PATH = "lmdb:////mnt/c/Users/sharl/repos/DTS/BigData/WM9L8-IMA/astore"
@@ -28,11 +28,6 @@ class ArcticInitializer:
     def get_library(self):
         return self.get_db()[self.libname]
 
-class CSVExtractor(Extractor):
-
-    def extract(self) -> pd.DataFrame:
-
-
 
 def extract_csv(csv_path: List) -> Dict:
     csv_list = os.listdir(csv_path)
@@ -41,18 +36,6 @@ def extract_csv(csv_path: List) -> Dict:
         stock = csv.split(".csv")[0]
         csv_hash[stock] = pd.read_csv(f"../data/{csv}")
     return csv_hash
-
-
-
-
-class ArcticStorer(Storer):
-
-    def store(self) -> pd.DataFrame:
-
-
-
-
-
 
 
 @click.command()

@@ -7,14 +7,12 @@ import pandas as pd
 
 @dataclass
 class Extractor(abc.ABC):
-
     @abc.abstractmethod
     def extract(self) -> pd.DataFrame:
         raise NotImplementedError("please implement an extraction")
 
 
 class Transformer(abc.ABC):
-
     @abc.abstractmethod
     def transform(self, *args, **kwargs) -> Any:
         raise NotImplementedError("please implement an extraction")
