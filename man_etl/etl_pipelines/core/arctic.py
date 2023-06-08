@@ -6,13 +6,16 @@ from arcticdb import Arctic
 from arcticdb.version_store.library import Library
 from logging import getLogger
 from typing import List
-from man_etl.etl_pipelines.core.base import Storer, Extractor
 from dataclasses import dataclass
 
-S3_PATH = "s3://s3.eu-west-2.amazonaws.com:manstocks?region=eu-west-2&access=AKIAVHAD6ZB4RYHDPBWA&secret=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"
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('Logger')
+
+S3_PATH = "s3://s3.eu-west-2.amazonaws.com:manstocks?region=eu-west-2&access=AKIAVHAD6ZB4RYHDPBWA&secret=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"
+
+
 
 class ArcticInitializer:
     def __init__(self, libname: str):
@@ -39,32 +42,11 @@ class ArcticInitializer:
         else:
             self.create_library()
             return self.get_db()[self.libname]
-        
+
 @dataclass
-class ArcticStorer(Storer):
-    to_store: Dict 
-    destination: Library
+class ArticReader:
 
-    def store(self, sym: str, data:pd.DataFrame):
-        logger.info(f"Writing data for symboe {sym}")
-        self.destination.write(sym, data)
-
-    def store_many(self):
-        for sym in self.to_store:
-            data = self.to_store[sym]
-            self.store(sym, data)
-
-        
-@dataclass
-class ArcticExtractor(Extractor):
-    symbols: List
     library: Library
-
-    def extract(self, symbol: str) -> pd.DataFrame:
-        return self.library.read(symbol).data
-
-    def extract_many(self) -> Dict:
-        data = {}
-        for sym in self.symbols:
-            data[sym] = self.extract(sym)
-        return data
+    
+    def __init__(self):
+        pass

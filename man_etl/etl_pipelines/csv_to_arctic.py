@@ -3,7 +3,7 @@ from typing import List, Dict
 from logging import getLogger
 import click
 from man_etl.etl_pipelines.core.arctic import ArcticInitializer, ArcticStorer
-from man_etl.etl_pipelines.core.datasource import CSVExtractor, YFExtractor
+from man_etl.etl_pipelines.core.extractors import CSVExtractor, YFExtractor
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('Logger')
