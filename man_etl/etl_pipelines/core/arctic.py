@@ -9,6 +9,7 @@ from typing import List
 from man_etl.etl_pipelines.core.base import Storer, Extractor
 from dataclasses import dataclass
 
+S3_PATH = "s3://s3.eu-west-2.amazonaws.com:manstocks?region=eu-west-2&access=AKIAVHAD6ZB4RYHDPBWA&secret=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"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('Logger')
