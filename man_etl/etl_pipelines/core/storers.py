@@ -1,8 +1,10 @@
+from contextlib import contextmanager
+
 import pandas as pd
 import logging
 from typing import Dict
 
-from arcticdb.version_store.library import Library
+#from arcticdb.version_store.library import Library
 from pyarrow import flight, Table
 from pyarrow._flight import FlightClient
 
@@ -16,7 +18,7 @@ logger = logging.getLogger('Logger')
 
 @dataclass
 class ArcticStorer(Storer):
-    destination: Library
+    #destination: Library
 
     def store(self):
         for sym in self.to_store:
@@ -29,9 +31,12 @@ class ArrowFlightStorer(Storer):
         self.endpoint = endpoint
         self.to_store = to_store
 
-    @property
+    @contextmanager
     def client_connection(self) -> FlightClient:
-        yield flight.connect(self.endpoint)
+        try:
+            yield flight.connect(self.endpoint)
+        finally:
+            logger.info("connection closed")
 
     def store(self):
         with self.client_connection as client:
