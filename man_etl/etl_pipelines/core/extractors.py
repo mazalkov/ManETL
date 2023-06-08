@@ -3,13 +3,13 @@ import pandas as pd
 import logging
 from man_etl.etl_pipelines.core.base import Extractor
 from arcticdb.version_store.library import Library
-from typing import List
+from typing import List, Dict
 from dataclasses import dataclass
+from man_etl.etl_pipelines.util.definitions import TRANSFORM
 
 from pyarrow._flight import FlightClient
 from man_etl.etl_pipelines.util.utils import SERVER_MAPPINGS
 from pyarrow import flight
-from dataclasses import dataclass
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('Logger')
@@ -33,7 +33,6 @@ class YFExtractor(Extractor):
 
 @dataclass
 class ArcticExtractor(Extractor):
-    symbols: List
     library: Library
 
     def extract(self, symbol: str) -> pd.DataFrame:
@@ -41,9 +40,12 @@ class ArcticExtractor(Extractor):
 
     def extract_many(self) -> Dict:
         data = {}
-        for sym in self.symbols:
+        for sym in self._get_raw_symbols():
             data[sym] = self.extract(sym)
         return data
+    
+    def _get_raw_symbols(self):
+        return [sym for sym in self.library.list_symbols() if TRANSFORM not in sym]
 
 class ArrowFlightExtractor(Extractor):
     def __init__(self, endpoint, filepath):
