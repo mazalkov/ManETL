@@ -1,14 +1,16 @@
 import os
+from contextlib import contextmanager
+
 import pandas as pd
 import logging
 from man_etl.etl_pipelines.core.base import Extractor
-from man_etl.etl_pipelines.util.definitions import TRANSFORM
 from arcticdb.version_store.library import Library
 from typing import List, Dict
 from dataclasses import dataclass
 
-
 from pyarrow._flight import FlightClient
+
+from man_etl.etl_pipelines.util.definitions import TRANSFORM
 from man_etl.etl_pipelines.util.utils import SERVER_MAPPINGS
 from pyarrow import flight
 
@@ -53,12 +55,15 @@ class ArrowFlightExtractor(Extractor):
         self.endpoint = endpoint
         self.filepath = filepath
 
-    @property
+    @contextmanager
     def client_connection(self) -> FlightClient:
-        yield flight.connect(self.endpoint)
+        try:
+            yield flight.connect(self.endpoint)
+        finally:
+            logger.info("closed connection")
 
     def extract(self) -> pd.DataFrame:
-        with self.client_connection as client:
+        with self.client_connection() as client:
             self.vendor_flight = client.get_flight_info(flight.FlightDescriptor.for_path(self.filepath))
             reader = client.do_get(self.vendor_flight.endpoints[0].ticket)
             data_table = reader.read_all()
