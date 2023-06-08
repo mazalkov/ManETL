@@ -2,8 +2,11 @@ import os
 import pandas as pd
 import logging
 from man_etl.etl_pipelines.core.base import Transformer
-from typing import Dict
+from typing import Dict, List
 from dataclasses import dataclass
+from man_etl.etl_pipelines.util.transforms import calcs
+from man_etl.etl_pipelines.util.definitions import TRANSFORM
+
 
 
 logging.basicConfig(level=logging.INFO)
@@ -12,12 +15,22 @@ logger = logging.getLogger('Logger')
 @dataclass
 class DataFrameTransformer(Transformer):
     data: Dict
+    transformers: Dict
 
-    def transform(self) -> pd.DataFrame:
-        pass
+    def transform(self) -> Dict:
+        transformed_data = {}
+        for symbol in self.data:
+            data_obj = self.data[symbol]
+            for tname, transform in self.transformers.items():
+                data_obj = self._apply_transform(data_obj, tname, transform)
+            transformed_data[f"{symbol}_{TRANSFORM}"] = data_obj
+        return transformed_data
 
-    def transfrom_many(self) -> Dict:
-        pass
+    @staticmethod
+    def _apply_transform(data_unit: pd.DataFrame, colname:str, fn) -> pd.DataFrame:
+        data_unit[colname] = data_unit.apply(fn, axis=1)
+        return data_unit
+
 
 class CPITransformer(Transformer):
     def transform(self, df: pd.DataFrame) -> pd.DataFrame:
