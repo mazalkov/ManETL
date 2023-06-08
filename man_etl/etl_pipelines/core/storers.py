@@ -42,8 +42,8 @@ class ArrowFlightStorer(Storer):
             logger.info("connection closed")
 
     def store(self):
-        with self.client_connection as client:
-            for symbol, data in self.to_store:
+        with self.client_connection() as client:
+            for symbol, data in self.to_store.items():
                 data_table = Table.from_pandas(data)
                 upload_descriptor = flight.FlightDescriptor.for_path(f"{self.library_name}/{symbol}.parquet")
                 writer, _ = client.do_put(upload_descriptor, data_table.schema)
