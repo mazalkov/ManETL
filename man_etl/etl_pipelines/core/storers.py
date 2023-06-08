@@ -18,4 +18,4 @@ class ArcticStorer(Storer):
     def store(self):
         for sym in self.to_store:
             data = self.to_store[sym]
-            self.store(sym, data)
+            self.destination.write(sym, data)
