@@ -23,7 +23,8 @@ def csv_to_arctic(library, csv_path):
     data = CSVExtractor(csv_path).extract()
     arctic_lib = ArcticInitializer(library)()
     logger.info("Storing data in S3")
-    ArcticStorer(to_store=data, destination=arctic_lib).store_many()
+    ArcticStorer(to_store=data, destination=arctic_lib).store()
+
 
 if __name__ == "__main__":
     csv_to_arctic()
