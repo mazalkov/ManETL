@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-
+import os
 import pandas as pd
 import logging
 from typing import Dict
@@ -44,7 +44,9 @@ class ArrowFlightStorer(Storer):
         with self.client_connection() as client:
             for symbol, data in self.to_store.items():
                 data_table = Table.from_pandas(data)
-                upload_descriptor = flight.FlightDescriptor.for_path(f"{self.library_name}/{symbol}.parquet")
+                file_path = f"{self.library_name}/{symbol}.parquet"
+                os.makedirs(os.path.dirname(file_path), exist_ok=True)
+                upload_descriptor = flight.FlightDescriptor.for_path(file_path)
                 writer, _ = client.do_put(upload_descriptor, data_table.schema)
                 writer.write_table(data_table)
                 writer.close()

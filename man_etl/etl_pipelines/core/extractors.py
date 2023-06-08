@@ -58,6 +58,12 @@ class ArcticExtractor(Extractor):
             data[sym] = self.extract(sym)
         return data
     
+    def extract_all(self):
+        data = {}
+        for sym in self.library.list_symbols():
+            data[sym] = self.extract(sym)
+        return data
+    
     def _get_raw_symbols(self):
         return [sym for sym in self.library.list_symbols() if TRANSFORM not in sym]
 
