@@ -20,13 +20,6 @@ class Transformer(abc.ABC):
 
 @dataclass
 class Storer(abc.ABC):
-    destination: Any
-    to_store: Union[pd.DataFrame, Dict[str, pd.DataFrame]]
-
     @abc.abstractmethod
     def store(self):
-        raise NotImplementedError("please implement a storer")
-
-    @abc.abstractmethod
-    def store_many(self):
         raise NotImplementedError("please implement a storer")

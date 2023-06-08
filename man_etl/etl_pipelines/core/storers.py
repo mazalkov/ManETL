@@ -17,7 +17,8 @@ logger = logging.getLogger('Logger')
 @dataclass
 class ArcticStorer(Storer):
     destination: Library
-
+    to_store: Dict
+    
     def store(self):
         for sym in self.to_store:
             data = self.to_store[sym]
