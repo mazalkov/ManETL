@@ -45,11 +45,10 @@ class CPITransformer(Transformer):
 
 
 @click.command()
-@click.option("--library", prompt="Enter library name", default="test")
-@click.option("--csv-path", prompt="Enter path for csv files", default="../data/")
-def arrow_flight_loader():
+@click.option("--library", prompt="Enter library name", default="ons")
+def arrow_flight_loader(library):
     extractor = ArrowFlightExtractor.parquet(filepath=VENDOR_FILEPATH)
     data = extractor.extract()
     transformed_data = CPITransformer().transform(data)
-    storer = ArcticStorer(destination="ons", to_store=transformed_data)
+    storer = ArcticStorer(destination=library, to_store=transformed_data)
     storer.store()
