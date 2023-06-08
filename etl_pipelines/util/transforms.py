@@ -21,16 +21,19 @@ def daily_returns(Close, Volume):
 #IMA_df['VWAP'] = IMA_df.apply(lambda x: VWAP(x["High"], x["Low"], x["Close"]), axis=1)
 
 
-daily_volatility_apple = IMA_df['daily_returns'].std()
-print('Daily volatility:')
-print('Apple: ', '{:.2f}%'.format(daily_volatility_apple))
+def calculate_volatility(IMA_df):
+    daily_volatility = IMA_df['Daily_Return'].std()
+    monthly_volatility = math.sqrt(21) * daily_volatility
+    annual_volatility = math.sqrt(252) * daily_volatility
+    
+    print('Daily volatility:')
+    print('Apple: {:.2f}%'.format(daily_volatility))
+    
+    print('Monthly volatility:')
+    print('Apple: {:.2f}%'.format(monthly_volatility))
+    
+    print('Annual volatility:')
+    print('Apple: {:.2f}%'.format(annual_volatility))
 
-
-monthly_volatility_apple = math.sqrt(21) * daily_volatility_apple
-print('Monthly volatility:')
-print ('Apple: ', '{:.2f}%'.format(monthly_volatility_apple))
-
-
-annual_volatility_apple = math.sqrt(252) * daily_volatility_apple
-print('Annual volatility:')
-print ('Apple: ', '{:.2f}%'.format(annual_volatility_apple))
+# Assuming IMA_df contains the DataFrame with daily returns column 'daily_returns'
+calculate_volatility(IMA_df)
