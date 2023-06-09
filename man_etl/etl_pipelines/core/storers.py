@@ -13,19 +13,19 @@ from dataclasses import dataclass
 from man_etl.etl_pipelines.util.utils import SERVER_MAPPINGS
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('Logger')
+logger = logging.getLogger("Logger")
 
 
 @dataclass
 class ArcticStorer(Storer):
     destination: Library
     to_store: Dict
-    
 
     def store(self):
         for sym in self.to_store:
             data = self.to_store[sym]
             self.destination.write(sym, data)
+
 
 class ArrowFlightStorer(Storer):
     def __init__(self, library_name, endpoint, to_store):
@@ -50,6 +50,11 @@ class ArrowFlightStorer(Storer):
                 writer, _ = client.do_put(upload_descriptor, data_table.schema)
                 writer.write_table(data_table)
                 writer.close()
+
     @classmethod
     def parquet(cls, to_store: Dict[str, pd.DataFrame], library_name: str):
-        return cls(endpoint=SERVER_MAPPINGS["parquet"], to_store=to_store, library_name=library_name)
+        return cls(
+            endpoint=SERVER_MAPPINGS["parquet"],
+            to_store=to_store,
+            library_name=library_name,
+        )

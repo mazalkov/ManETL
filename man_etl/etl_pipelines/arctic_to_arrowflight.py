@@ -5,7 +5,8 @@ from man_etl.etl_pipelines.core.arctic import ArcticInitializer
 import logging
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('Logger')
+logger = logging.getLogger("Logger")
+
 
 @click.command()
 @click.option("--library", prompt="Enter library name", default="etl_demo")
