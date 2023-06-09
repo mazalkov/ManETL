@@ -29,7 +29,7 @@ ManETL is more than just an ETL platform. It's a solution designed for data prof
 `git clone https://github.com/mazalkov/WM9L8-IMA.git`
 
 2. **Navigate to the project directory:**  
-`cd ManETL`
+`cd WM9L8-IMA`
 
 3. **Install the requirements:**  
 `pip install -r requirements.txt`
