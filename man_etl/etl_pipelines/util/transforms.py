@@ -9,12 +9,8 @@ bucket = Arctic(
 )
 lib = bucket["etl_demo"]
 raw_symbols = [symbol for symbol in lib.list_symbols() if "_TRANSFORMED" not in symbol]
-transformed_symbols = [
-    df_name for df_name in lib.list_symbols() if "_TRANSFORMED" in df_name
-]
-transformed_dfs_dict = dict(
-    zip(raw_symbols, [lib.read(df_name).data for df_name in transformed_symbols])
-)
+transformed_symbols = [df_name for df_name in lib.list_symbols() if "_TRANSFORMED" in df_name]
+transformed_dfs_dict = dict(zip(raw_symbols, [lib.read(df_name).data for df_name in transformed_symbols]))
 raw_dfs = [lib.read(symbol).data for symbol in raw_symbols]
 
 

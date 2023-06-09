@@ -17,12 +17,8 @@ bucket = Arctic(
 )
 lib = bucket["etl_demo"]
 raw_symbols = [symbol for symbol in lib.list_symbols() if "_TRANSFORMED" not in symbol]
-transformed_symbols = [
-    df_name for df_name in lib.list_symbols() if "_TRANSFORMED" in df_name
-]
-transformed_dfs_dict = dict(
-    zip(raw_symbols, [lib.read(df_name).data for df_name in transformed_symbols])
-)
+transformed_symbols = [df_name for df_name in lib.list_symbols() if "_TRANSFORMED" in df_name]
+transformed_dfs_dict = dict(zip(raw_symbols, [lib.read(df_name).data for df_name in transformed_symbols]))
 
 FEATURES = ["Volume", "VWAP"]
 
@@ -60,9 +56,7 @@ with col1b:
     st.radio("Normalise?", key=state_names[2], options=[True, False])
 st.multiselect("Chosen symbols", key=state_names[0], options=raw_symbols)
 
-st.subheader(
-    f"{'Normalised' if chosen_norm else ''} {chosen_feature} for {' '.join(str(x) for x in chosen_symbols)}"
-)
+st.subheader(f"{'Normalised' if chosen_norm else ''} {chosen_feature} for {' '.join(str(x) for x in chosen_symbols)}")
 
 fig = make_subplots(rows=1, cols=1)
 for symbol in chosen_symbols:

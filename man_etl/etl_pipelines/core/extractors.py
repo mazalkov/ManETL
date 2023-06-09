@@ -43,9 +43,7 @@ class YFExtractor(Extractor):
         start_str = start.strftime("%Y-%m-%d")
         end_str = end.strftime("%Y-%m-%d")
         for symbol in self.symbols:
-            data[symbol] = yf.download(
-                symbol, start=start_str, end=end_str, interval="1d"
-            )
+            data[symbol] = yf.download(symbol, start=start_str, end=end_str, interval="1d")
         return data
 
 
@@ -86,9 +84,7 @@ class ArrowFlightExtractor(Extractor):
 
     def extract(self) -> pd.DataFrame:
         with self.client_connection() as client:
-            self.vendor_flight = client.get_flight_info(
-                flight.FlightDescriptor.for_path(self.filepath)
-            )
+            self.vendor_flight = client.get_flight_info(flight.FlightDescriptor.for_path(self.filepath))
             reader = client.do_get(self.vendor_flight.endpoints[0].ticket)
             data_table = reader.read_all()
             return data_table.to_pandas()
