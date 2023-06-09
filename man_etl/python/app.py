@@ -30,7 +30,7 @@ from stock pricing data across a range of symbols.
 """)
 
 state_names = ["chosen_symbols", "chosen_feature", "chosen_norm", "chosen_single"]
-default_values = [raw_symbols[:2], FEATURES[0], True, raw_symbols[0]]
+default_values = [raw_symbols[:3], FEATURES[0], True, raw_symbols[0]]
 
 for i in range(len(state_names)):
     if state_names[i] not in st.session_state:
@@ -51,7 +51,7 @@ with col1b:
     st.radio("Normalise?", key=state_names[2], options=[True, False])
 st.multiselect('Chosen symbols', key=state_names[0], options=raw_symbols)
 
-# st.subheader(f"{chosen_feature} for {' '.join(str(x) for x in chosen_symbols)}")
+st.subheader(f"{'Normalised' if chosen_norm else ''} {chosen_feature} for {' '.join(str(x) for x in chosen_symbols)}")
 
 fig = make_subplots(rows=1, cols=1)
 for symbol in chosen_symbols:
