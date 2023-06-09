@@ -7,3 +7,5 @@ six==1.16.0
 urllib3==1.26.16
 arcticdb==1.2.1
 pyarrow==12.0.0
+plotly==5.15.0
+scipy==1.10.1
