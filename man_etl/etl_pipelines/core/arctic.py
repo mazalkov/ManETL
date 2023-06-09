@@ -9,12 +9,10 @@ from typing import List
 from dataclasses import dataclass
 
 
-
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('Logger')
+logger = logging.getLogger("Logger")
 
 S3_PATH = "s3://s3.eu-west-2.amazonaws.com:manstocks?region=eu-west-2&access=AKIAVHAD6ZB4RYHDPBWA&secret=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"
-
 
 
 class ArcticInitializer:
@@ -43,10 +41,10 @@ class ArcticInitializer:
             self.create_library()
             return self.get_db()[self.libname]
 
+
 @dataclass
 class ArticReader:
-
     library: Library
-    
+
     def __init__(self):
         pass

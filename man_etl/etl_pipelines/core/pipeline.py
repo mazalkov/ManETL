@@ -4,11 +4,14 @@ from dataclasses import dataclass
 from man_etl.etl_pipelines.core.base import Extractor, Transformer, Storer
 
 logger = logging.getLogger(__name__)
+
+
 @dataclass
-class Pipeline():
+class Pipeline:
     extractor: Extractor
     transformer: Transformer
     storer: Storer
+
     def run_pipeline(self):
         logger.info("runing extraction")
         extracted_data = self.extractor.extract()

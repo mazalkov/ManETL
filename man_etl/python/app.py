@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 import pandas as pd
+
 # import pyarrow_client
 
 # table = pyarrow_client.get_data()
@@ -11,10 +12,12 @@ import pandas as pd
 
 ### Load data from Arctic
 
-bucket = Arctic("s3://s3.eu-west-2.amazonaws.com:manstocks?region=eu-west-2&access=AKIAVHAD6ZB4RYHDPBWA&secret=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")
-lib = bucket['etl_demo']
-raw_symbols = [symbol for symbol in lib.list_symbols() if '_TRANSFORMED' not in symbol]
-transformed_symbols = [df_name for df_name in lib.list_symbols() if '_TRANSFORMED' in df_name]
+bucket = Arctic(
+    "s3://s3.eu-west-2.amazonaws.com:manstocks?region=eu-west-2&access=AKIAVHAD6ZB4RYHDPBWA&secret=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"
+)
+lib = bucket["etl_demo"]
+raw_symbols = [symbol for symbol in lib.list_symbols() if "_TRANSFORMED" not in symbol]
+transformed_symbols = [df_name for df_name in lib.list_symbols() if "_TRANSFORMED" in df_name]
 transformed_dfs_dict = dict(zip(raw_symbols, [lib.read(df_name).data for df_name in transformed_symbols]))
 
 FEATURES = ["Volume", "VWAP"]
@@ -36,7 +39,7 @@ for i in range(len(state_names)):
     if state_names[i] not in st.session_state:
         st.session_state[state_names[i]] = default_values[i]
 
-chosen_symbols = st.session_state[state_names[0]] # Error if all options deselected!
+chosen_symbols = st.session_state[state_names[0]]  # Error if all options deselected!
 chosen_feature = st.session_state[state_names[1]]
 chosen_norm = st.session_state[state_names[2]]
 chosen_single = st.session_state[state_names[3]]
@@ -62,7 +65,7 @@ with col1a:
     st.selectbox("Choose feature:", key=state_names[1], options=FEATURES)
 with col1b:
     st.radio("Normalise?", key=state_names[2], options=[True, False])
-st.multiselect('Chosen symbols', key=state_names[0], options=raw_symbols)
+st.multiselect("Chosen symbols", key=state_names[0], options=raw_symbols)
 
 st.subheader(f"{'Normalised' if chosen_norm else ''} {chosen_feature} for {' '.join(str(x) for x in chosen_symbols)}")
 
@@ -73,17 +76,9 @@ for symbol in chosen_symbols:
 
     if chosen_norm == True:
         normalised_y_data = (y_data - y_data.min()) / (y_data.max() - y_data.min())
-        fig.add_scatter(
-            x=x_data,
-            y=normalised_y_data,
-            name=symbol, mode='lines'
-        )
+        fig.add_scatter(x=x_data, y=normalised_y_data, name=symbol, mode="lines")
     elif chosen_norm == False:
-        fig.add_scatter(
-            x=x_data,
-            y=y_data,
-            name=symbol, mode='lines'
-        )
+        fig.add_scatter(x=x_data, y=y_data, name=symbol, mode="lines")
 
 fig.update_layout(
     xaxis_title="Date", yaxis_title=f"{'Normalised' if chosen_norm else ''} {chosen_feature}"
@@ -108,9 +103,10 @@ for i in range(len(FEATURES)):
         go.Scatter(
             x=transformed_dfs_dict[chosen_single].index,
             y=transformed_dfs_dict[chosen_single][FEATURES[i]],
-            name=FEATURES[i]
-            ),
-        row=1, col=i+1
+            name=FEATURES[i],
+        ),
+        row=1,
+        col=i + 1,
     )
 
 fig.update_layout(height=400, width=1200, yaxis_title=f"{'Normalised' if chosen_norm else ''} {chosen_feature}")

@@ -2,12 +2,17 @@ import pandas as pd
 import numpy as np
 import math
 import yfinance as yf
+import arcticdb as Arctic
 
+bucket = Arctic(
+    "s3://s3.eu-west-2.amazonaws.com:manstocks?region=eu-west-2&access=AKIAVHAD6ZB4RYHDPBWA&secret=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"
+)
+lib = bucket["etl_demo"]
+raw_symbols = [symbol for symbol in lib.list_symbols() if "_TRANSFORMED" not in symbol]
+transformed_symbols = [df_name for df_name in lib.list_symbols() if "_TRANSFORMED" in df_name]
+transformed_dfs_dict = dict(zip(raw_symbols, [lib.read(df_name).data for df_name in transformed_symbols]))
+raw_dfs = [lib.read(symbol).data for symbol in raw_symbols]
 
-
-# IMA_df = pd.read_csv('data/AAPL.csv')
-
-# IMA_df['daily_returns']=(IMA_df['Close'].pct_change())*100
 
 def calc_VWAP(high, low, close):
     typical_price = np.mean([high, low, close])
@@ -24,25 +29,18 @@ def calc_daily_returns(Close, Volume):
     return total_returns
 
 
-# IMA_df['VWAP'] = IMA_df.apply(lambda x: VWAP(x["High"], x["Low"], x["Close"]), axis=1)
+def calc_volatility(raw_dfs):
+    daily_volatility = raw_dfs["Daily Returns"].std()
+    weekly_volatility = raw_dfs["Daily Returns"].std() * (252**0.5)
+    annual_volatility = raw_dfs["Daily Returns"].std() * (252**0.5)
 
 
-def calculate_volatility(data: pd.DataFrame):
-    daily_volatility = data["Daily_Return"].std()
-    monthly_volatility = math.sqrt(21) * daily_volatility
-    annual_volatility = math.sqrt(252) * daily_volatility
-
-    print("Daily volatility:")
-    print("Apple: {:.2f}%".format(daily_volatility))
-
-    print("Monthly volatility:")
-    print("Apple: {:.2f}%".format(monthly_volatility))
-
-    print("Annual volatility:")
-    print("Apple: {:.2f}%".format(annual_volatility))
+vol_df = pd.DataFrame(raw_dfs, index=["Daily", "Weekly", "Annual"])
 
 
-# Assuming IMA_df contains the DataFrame with daily returns column 'daily_returns'
+calcs = {
+    "VWAP": (lambda x: calc_VWAP(x["High"], x["Low"], x["Close"])),
+    "Daily Returns": (lambda x: calc_daily_returns(x["Close"], x["Volume"])),
+}
 
-calcs = {"VWAP": (lambda x: calc_VWAP(x["High"], x["Low"], x["Close"])), "Daily Returns": (lambda x: calc_daily_returns(x["Close"], x["Volume"]))}
-
+calc_vol = {"VOLATILITY": (lambda x: calc_volatility(x["Daily Returns"]))}

@@ -8,11 +8,9 @@ from typing import Dict, List
 from dataclasses import dataclass
 
 
-
-
-
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('Logger')
+logger = logging.getLogger("Logger")
+
 
 @dataclass
 class DataFrameTransformer(Transformer):
@@ -29,7 +27,7 @@ class DataFrameTransformer(Transformer):
         return transformed_data
 
     @staticmethod
-    def _apply_transform(data_unit: pd.DataFrame, colname:str, fn) -> pd.DataFrame:
+    def _apply_transform(data_unit: pd.DataFrame, colname: str, fn) -> pd.DataFrame:
         data_unit[colname] = data_unit.apply(fn, axis=1)
         return data_unit
 
