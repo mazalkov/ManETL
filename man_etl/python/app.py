@@ -25,12 +25,12 @@ FEATURES = ["Volume", "VWAP"]
 
 st.title("Man ETL Dashboard")
 st.write("""
-This dashboard allows you to customise the visualisation of a features, both raw and derived,
+Welcome! This dashboard allows you to customise the visualisation of features, both raw and derived,
 from stock pricing data across a range of symbols.
 """)
 
-state_names = ["chosen_symbols", "chosen_feature", "chosen_norm", "chosen_single"]
-default_values = [raw_symbols[:3], FEATURES[0], True, raw_symbols[0]]
+state_names = ["chosen_symbols", "chosen_feature", "chosen_norm", "chosen_single", "chosen_info"]
+default_values = [raw_symbols[:3], FEATURES[0], True, raw_symbols[0], FEATURES[0]]
 
 for i in range(len(state_names)):
     if state_names[i] not in st.session_state:
@@ -40,6 +40,19 @@ chosen_symbols = st.session_state[state_names[0]] # Error if all options deselec
 chosen_feature = st.session_state[state_names[1]]
 chosen_norm = st.session_state[state_names[2]]
 chosen_single = st.session_state[state_names[3]]
+chosen_info = st.session_state[state_names[4]]
+
+## INFO ##
+
+st.radio("Show feature information for:", key=state_names[4], options=FEATURES, horizontal=True)
+if chosen_info == "Volume":
+    st.write("Volume is a raw feature pulled directly from Yahoo Finance.")
+elif chosen_info == "VWAP":
+    st.write("""VWAP is the volume-weighted average price of stocks on a given day.
+             It takes the typical price (i.e. the mean of the high, low, and close prices) at different intervals
+             and normalises over the cumulative values for that day""")
+else:
+    st.write("No info to display")
 
 ## SECTION 1 ##
 
@@ -72,6 +85,9 @@ for symbol in chosen_symbols:
             name=symbol, mode='lines'
         )
 
+fig.update_layout(
+    xaxis_title="Date", yaxis_title=f"{'Normalised' if chosen_norm else ''} {chosen_feature}"
+)
 
 tab1, tab2 = st.tabs(["Default theme", "Plotly theme"])
 with tab1:
@@ -97,7 +113,7 @@ for i in range(len(FEATURES)):
         row=1, col=i+1
     )
 
-fig.update_layout(height=400, width=1200)
+fig.update_layout(height=400, width=1200, yaxis_title=f"{'Normalised' if chosen_norm else ''} {chosen_feature}")
 
 
 tab1, tab2 = st.tabs(["Default theme", "Plotly theme"])
