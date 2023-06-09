@@ -27,10 +27,12 @@ FEATURES = ["Volume", "VWAP"]
 ### SECTION 0 ###
 
 st.title("Man ETL Dashboard")
-st.write("""
+st.write(
+    """
 Welcome! This dashboard allows you to customise the visualisation of features, both raw and derived,
 from stock pricing data across a range of symbols.
-""")
+"""
+)
 
 state_names = ["chosen_symbols", "chosen_feature", "chosen_norm", "chosen_single", "chosen_info"]
 default_values = [raw_symbols[:3], FEATURES[0], True, raw_symbols[0], FEATURES[0]]
@@ -51,9 +53,11 @@ st.radio("Show feature information for:", key=state_names[4], options=FEATURES, 
 if chosen_info == "Volume":
     st.write("Volume is a raw feature pulled directly from Yahoo Finance.")
 elif chosen_info == "VWAP":
-    st.write("""VWAP is the volume-weighted average price of stocks on a given day.
+    st.write(
+        """VWAP is the volume-weighted average price of stocks on a given day.
              It takes the typical price (i.e. the mean of the high, low, and close prices) at different intervals
-             and normalises over the cumulative values for that day""")
+             and normalises over the cumulative values for that day"""
+    )
 else:
     st.write("No info to display")
 
@@ -80,9 +84,7 @@ for symbol in chosen_symbols:
     elif chosen_norm == False:
         fig.add_scatter(x=x_data, y=y_data, name=symbol, mode="lines")
 
-fig.update_layout(
-    xaxis_title="Date", yaxis_title=f"{'Normalised' if chosen_norm else ''} {chosen_feature}"
-)
+fig.update_layout(xaxis_title="Date", yaxis_title=f"{'Normalised' if chosen_norm else ''} {chosen_feature}")
 
 tab1, tab2 = st.tabs(["Default theme", "Plotly theme"])
 with tab1:
